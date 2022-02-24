@@ -34,20 +34,20 @@ const List<String> cryptoList = [
 
 const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
 const apiKey = coinAPIKey;
-var apiResponse;
-Map<String, double> cryptoPrices = {};
 
 class CoinData {
   Future getCoinData({required String fiatCurr}) async {
+    Map<String, String> cryptoPrices = {};
     for (String crypto in cryptoList) {
       String url = '$coinAPIURL/$crypto/$fiatCurr?apikey=$apiKey';
       http.Response response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        apiResponse = jsonDecode(response.body);
-        cryptoPrices[crypto] = apiResponse['rate'];
+        var apiResponse = jsonDecode(response.body);
+        double price = apiResponse['rate'];
+        cryptoPrices[crypto] = price.toStringAsFixed(4);
       } else {
-        throw (response.statusCode.toString());
+        throw ('Problem with the get request: {$response.statusCode.toString()}');
       }
     }
     return cryptoPrices;
