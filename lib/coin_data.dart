@@ -47,7 +47,8 @@ class CoinData {
         double price = apiResponse['rate'];
         cryptoPrices[crypto] = price.toStringAsFixed(4);
       } else {
-        throw ('Problem with the get request: {$response.statusCode.toString()}');
+        String stCode = response.statusCode.toString();
+        throw ('Problem with the get request - statusCode = $stCode');
       }
     }
     return cryptoPrices;
