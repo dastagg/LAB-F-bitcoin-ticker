@@ -50,11 +50,17 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
-  CoinData coinData = CoinData();
+  String cryptoCoinValue = '?';
 
-  void getData() {
-    coinData.getCoinData();
-    // TODO: Either send to here or at this point, extract the price from the data.
+  void getData() async {
+    try {
+      double data = await CoinData().getCoinData();
+      setState(() {
+        cryptoCoinValue = data.toStringAsFixed(4);
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -81,13 +87,13 @@ class _PriceScreenState extends State<PriceScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  //TODO: Update the Text Widget with the live bitcoin data here.
-                  '1 BTC = ? USD',
+                  '1 BTC = $cryptoCoinValue USD',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20.0,
                     color: Colors.white,
                   ),

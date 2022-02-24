@@ -37,18 +37,18 @@ const apiKey = coinAPIKey;
 String fiatCurrency = 'USD';
 String cryptoCurrency = 'BTC';
 String url = '$coinAPIURL/$cryptoCurrency/$fiatCurrency?apikey=$apiKey';
-Map? mapResponse;
+var apiResponse;
 
 class CoinData {
   Future getCoinData() async {
     http.Response response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      String data = response.body;
-      mapResponse = jsonDecode(data);
-      print(mapResponse);
+      apiResponse = jsonDecode(response.body);
+      var currentPrice = apiResponse['rate'];
+      return currentPrice;
     } else {
-      print(response.statusCode.toString());
+      throw (response.statusCode.toString());
     }
   }
 }
