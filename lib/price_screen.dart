@@ -34,12 +34,31 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   String cryptoCoinValue = '?';
+  String coinValueBTC = '?';
+  String coinValueETH = '?';
+  String coinValueLTC = '?';
+  double coinValue = 0.0;
+  late Map<String, double> coinData;
 
   void getData() async {
     try {
-      double data = await CoinData().getCoinData(fiatCurr: selectedCurrency);
+      coinData = await CoinData().getCoinData(fiatCurr: selectedCurrency);
+
       setState(() {
-        cryptoCoinValue = data.toStringAsFixed(4);
+        for (var k in coinData.keys) {
+          if (k == 'BTC') {
+            coinValue = coinData[k] as double;
+            coinValueBTC = coinValue.toStringAsFixed(4);
+          }
+          if (k == 'ETH') {
+            coinValue = coinData[k] as double;
+            coinValueETH = coinValue.toStringAsFixed(4);
+          }
+          if (k == 'LTC') {
+            coinValue = coinData[k] as double;
+            coinValueLTC = coinValue.toStringAsFixed(4);
+          }
+        }
       });
     } catch (e) {
       print(e);
@@ -74,7 +93,51 @@ class _PriceScreenState extends State<PriceScreen> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = $cryptoCoinValue $selectedCurrency',
+                  '1 BTC = $coinValueBTC $selectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+            child: Card(
+              color: Colors.lightBlueAccent,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 15.0, horizontal: 28.0),
+                child: Text(
+                  '1 ETH = $coinValueETH $selectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+            child: Card(
+              color: Colors.lightBlueAccent,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 15.0, horizontal: 28.0),
+                child: Text(
+                  '1 LTC = $coinValueLTC $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20.0,

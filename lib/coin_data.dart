@@ -34,21 +34,22 @@ const List<String> cryptoList = [
 
 const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
 const apiKey = coinAPIKey;
-String cryptoCurrency = 'BTC';
 var apiResponse;
+Map<String, double> cryptoPrices = {};
 
 class CoinData {
   Future getCoinData({required String fiatCurr}) async {
-    String url = '$coinAPIURL/$cryptoCurrency/$fiatCurr?apikey=$apiKey';
-    http.Response response = await http.get(Uri.parse(url));
-    print(url);
+    for (String crypto in cryptoList) {
+      String url = '$coinAPIURL/$crypto/$fiatCurr?apikey=$apiKey';
+      http.Response response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      apiResponse = jsonDecode(response.body);
-      var currentPrice = apiResponse['rate'];
-      return currentPrice;
-    } else {
-      throw (response.statusCode.toString());
+      if (response.statusCode == 200) {
+        apiResponse = jsonDecode(response.body);
+        cryptoPrices[crypto] = apiResponse['rate'];
+      } else {
+        throw (response.statusCode.toString());
+      }
     }
+    return cryptoPrices;
   }
 }
