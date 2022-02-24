@@ -50,12 +50,17 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
-  //TODO: Create a method here called getData() to get the coin data from coin_data.dart
+  CoinData coinData = CoinData();
+
+  void getData() {
+    coinData.getCoinData();
+    // TODO: Either send to here or at this point, extract the price from the data.
+  }
 
   @override
   void initState() {
     super.initState();
-    //TODO: Call getData() when the screen loads up.
+    getData();
   }
 
   @override
