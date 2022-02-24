@@ -91,7 +91,7 @@ class _PriceScreenState extends State<PriceScreen> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = $cryptoCoinValue USD',
+                  '1 BTC = $cryptoCoinValue $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20.0,
