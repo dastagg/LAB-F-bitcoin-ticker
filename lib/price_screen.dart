@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'coin_data.dart';
-import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
   const PriceScreen({Key? key}) : super(key: key);
@@ -29,24 +27,9 @@ class _PriceScreenState extends State<PriceScreen> {
       onChanged: (value) {
         setState(() {
           selectedCurrency = value!;
+          getData();
         });
       },
-    );
-  }
-
-  CupertinoPicker iOSPicker() {
-    List<Text> pickerItems = [];
-    for (String currency in currenciesList) {
-      pickerItems.add(Text(currency));
-    }
-
-    return CupertinoPicker(
-      backgroundColor: Colors.lightBlue,
-      itemExtent: 32.0,
-      onSelectedItemChanged: (selectedIndex) {
-        debugPrint(selectedIndex.toString());
-      },
-      children: pickerItems,
     );
   }
 
@@ -54,7 +37,7 @@ class _PriceScreenState extends State<PriceScreen> {
 
   void getData() async {
     try {
-      double data = await CoinData().getCoinData();
+      double data = await CoinData().getCoinData(fiatCurr: selectedCurrency);
       setState(() {
         cryptoCoinValue = data.toStringAsFixed(4);
       });
@@ -106,7 +89,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: Platform.isIOS ? iOSPicker() : androidDropdown(),
+            child: androidDropdown(),
           ),
         ],
       ),

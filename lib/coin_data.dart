@@ -34,14 +34,14 @@ const List<String> cryptoList = [
 
 const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
 const apiKey = coinAPIKey;
-String fiatCurrency = 'USD';
 String cryptoCurrency = 'BTC';
-String url = '$coinAPIURL/$cryptoCurrency/$fiatCurrency?apikey=$apiKey';
 var apiResponse;
 
 class CoinData {
-  Future getCoinData() async {
+  Future getCoinData({required String fiatCurr}) async {
+    String url = '$coinAPIURL/$cryptoCurrency/$fiatCurr?apikey=$apiKey';
     http.Response response = await http.get(Uri.parse(url));
+    print(url);
 
     if (response.statusCode == 200) {
       apiResponse = jsonDecode(response.body);
